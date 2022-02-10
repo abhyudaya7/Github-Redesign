@@ -23,8 +23,11 @@ class InputFragment : Fragment() {
         _binding = FragmentInputBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val action = InputFragmentDirections.actionInputFragmentToProfileFragment(binding.username.text.toString())
-        view.findNavController().navigate(action)
+        binding.button.setOnClickListener() {
+            val action =
+                InputFragmentDirections.actionInputFragmentToProfileFragment(binding.username.text.toString())
+            view.findNavController().navigate(action)
+        }
 
         return view
     }

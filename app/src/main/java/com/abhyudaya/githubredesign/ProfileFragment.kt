@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.abhyudaya.githubredesign.databinding.FragmentProfileBinding
 import com.squareup.picasso.Picasso
 import retrofit2.Call
@@ -35,31 +36,35 @@ class ProfileFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         val userName = ProfileFragmentArgs.fromBundle(requireArguments()).userName
 
-        viewModel.name.observe(viewLifecycleOwner, Observer { newVal ->
-            binding.name.text = newVal
-        })
+        binding.profileViewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.login.observe(viewLifecycleOwner, Observer { newVal ->
-            binding.userName.text = "@$newVal"
-        })
+        viewModel.getProfileData(userName)
 
-        viewModel.bio.observe(viewLifecycleOwner, Observer { newVal ->
-            binding.bio.text = newVal
-        })
-
-        viewModel.followers.observe(viewLifecycleOwner, Observer { newVal ->
-            binding.followersData.text = newVal.toString()
-        })
-
-        viewModel.following.observe(viewLifecycleOwner, Observer { newVal ->
-            binding.followingData.text = newVal.toString()
-        })
+//        viewModel.name.observe(viewLifecycleOwner, Observer { newVal ->
+//            binding.name.text = newVal
+//        })
+//
+//        viewModel.login.observe(viewLifecycleOwner, Observer { newVal ->
+//            binding.userName.text = "@$newVal"
+//        })
+//
+//        viewModel.bio.observe(viewLifecycleOwner, Observer { newVal ->
+//            binding.bio.text = newVal
+//        })
+//
+//        viewModel.followers.observe(viewLifecycleOwner, Observer { newVal ->
+//            binding.followersData.text = newVal.toString()
+//        })
+//
+//        viewModel.following.observe(viewLifecycleOwner, Observer { newVal ->
+//            binding.followingData.text = newVal.toString()
+//        })
 
         viewModel.avatarUrl.observe(viewLifecycleOwner, Observer { newVal ->
             Picasso.get().load(newVal).into(binding.profileImage)
         })
 
-        viewModel.getProfileData(userName)
 
         return view
     }

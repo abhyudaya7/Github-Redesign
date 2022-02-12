@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.abhyudaya.githubredesign.databinding.FragmentProfileBinding
 import com.squareup.picasso.Picasso
 import retrofit2.Call
@@ -20,7 +23,7 @@ class ProfileFragment : Fragment() {
     var _binding: FragmentProfileBinding? = null
     val binding get() = _binding!!
 
-
+    lateinit var viewModel: ProfileViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,34 +31,37 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         val userName = ProfileFragmentArgs.fromBundle(requireArguments()).userName
-        getProfileData(userName)
-        return view
-    }
 
-    private fun getProfileData(user: String) {
-        val retrofitBuilder = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.github.com/users/")
-            .build()
-            .create(ProfileApiInterface::class.java)
-
-        val retrofitData = retrofitBuilder.getProfileData(user)
-        retrofitData.enqueue(object : Callback<ProfileData?> {
-            override fun onResponse(call: Call<ProfileData?>, response: Response<ProfileData?>) {
-                val responseBody = response.body()!!
-                binding.name.text = responseBody.name
-                binding.userName.text = responseBody.login
-                binding.bio.text = responseBody.bio
-                binding.followersData.text = responseBody.followers.toString()
-                binding.followingData.text = responseBody.following.toString()
-                Picasso.get().load(responseBody.avatar_url).into(binding.profileImage)
-            }
-
-            override fun onFailure(call: Call<ProfileData?>, t: Throwable) {
-                Log.d("ProfileFragment", "${t.message}")
-            }
+        viewModel.name.observe(viewLifecycleOwner, Observer { newVal ->
+            binding.name.text = newVal
         })
+
+        viewModel.login.observe(viewLifecycleOwner, Observer { newVal ->
+            binding.userName.text = "@$newVal"
+        })
+
+        viewModel.bio.observe(viewLifecycleOwner, Observer { newVal ->
+            binding.bio.text = newVal
+        })
+
+        viewModel.followers.observe(viewLifecycleOwner, Observer { newVal ->
+            binding.followersData.text = newVal.toString()
+        })
+
+        viewModel.following.observe(viewLifecycleOwner, Observer { newVal ->
+            binding.followingData.text = newVal.toString()
+        })
+
+        viewModel.avatarUrl.observe(viewLifecycleOwner, Observer { newVal ->
+            Picasso.get().load(newVal).into(binding.profileImage)
+        })
+
+        viewModel.getProfileData(userName)
+
+        return view
     }
 
     override fun onDestroyView() {

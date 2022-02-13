@@ -35,36 +35,14 @@ class ProfileFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         val userName = ProfileFragmentArgs.fromBundle(requireArguments()).userName
-
+        viewModel.user = userName
         binding.profileViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.getProfileData(userName)
-
-//        viewModel.name.observe(viewLifecycleOwner, Observer { newVal ->
-//            binding.name.text = newVal
-//        })
-//
-//        viewModel.login.observe(viewLifecycleOwner, Observer { newVal ->
-//            binding.userName.text = "@$newVal"
-//        })
-//
-//        viewModel.bio.observe(viewLifecycleOwner, Observer { newVal ->
-//            binding.bio.text = newVal
-//        })
-//
-//        viewModel.followers.observe(viewLifecycleOwner, Observer { newVal ->
-//            binding.followersData.text = newVal.toString()
-//        })
-//
-//        viewModel.following.observe(viewLifecycleOwner, Observer { newVal ->
-//            binding.followingData.text = newVal.toString()
-//        })
-
+        viewModel.getDataFromApi()
         viewModel.avatarUrl.observe(viewLifecycleOwner, Observer { newVal ->
             Picasso.get().load(newVal).into(binding.profileImage)
         })
-
 
         return view
     }

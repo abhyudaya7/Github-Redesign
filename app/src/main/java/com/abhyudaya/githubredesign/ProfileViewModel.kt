@@ -4,13 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.squareup.picasso.Picasso
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.StringBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 class ProfileViewModel: ViewModel() {
 
@@ -20,40 +18,52 @@ class ProfileViewModel: ViewModel() {
     val login: LiveData<String> get() = _login
     private val _bio = MutableLiveData<String>("")
     val bio: LiveData<String> get() = _bio
-    private val _followers = MutableLiveData<Int>(-1)
+    private val _followers = MutableLiveData<Int>(0)
     val followers: LiveData<Int> get() = _followers
-    private val _following = MutableLiveData<Int>(-1)
+    private val _following = MutableLiveData<Int>(0)
     val following : LiveData<Int> get() = _following
     private val _avatarUrl = MutableLiveData<String>("/")
     val avatarUrl : LiveData<String> = _avatarUrl
+    private val _repositoriesData = MutableLiveData<Int>(0)
+    val repositoriesData: LiveData<Int> get() = _repositoriesData
+    private val _starCount = MutableLiveData<Int>(0)
+    val starCount: LiveData<Int> get() = _starCount
 
+    lateinit var user: String
+    lateinit var repositoryData: List<ReposData>
+    fun getDataFromApi() {
+        RetrofitFactory.BASE_URL = "https://api.github.com/users/"
+        val profileService = RetrofitFactory.makeRetrofitService()
+        RetrofitFactory.BASE_URL = "https://api.github.com/users/$user/"
+        val repoService = RetrofitFactory.makeRetrofitService()
 
-    fun getProfileData(user: String) {
-        Log.d("UserName", user)
-        val retrofitBuilder = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.github.com/users/")
-            .build()
-            .create(ProfileApiInterface::class.java)
+        CoroutineScope(Dispatchers.IO).launch {
+            val profileResponse = profileService.getProfileData(user)
+            val repoResponse = repoService.getReposData()
 
-        val retrofitData = retrofitBuilder.getProfileData(user)
-        retrofitData.enqueue(object : Callback<ProfileData?> {
-            override fun onResponse(call: Call<ProfileData?>, response: Response<ProfileData?>) {
-                val responseBody = response.body()!!
-                Log.d("Abhyu", "Request success")
-                _name.value = responseBody.name
-                _login.value = responseBody.login
-                _bio.value = responseBody.bio
-                _followers.value = responseBody.followers
-                _avatarUrl.value = responseBody.avatar_url
-                _following.value = responseBody.following
+            withContext(Dispatchers.Main) {
+                try{
+                    if (profileResponse.isSuccessful and repoResponse.isSuccessful) {
+                        val profileBody = profileResponse.body()!!
+                        val repoBody = repoResponse.body()!!
+                        _name.value = profileBody.name
+                        _login.value = profileBody.login
+                        _bio.value = profileBody.bio
+                        _followers.value = profileBody.followers
+                        _avatarUrl.value = profileBody.avatar_url
+                        _following.value = profileBody.following
+                        _repositoriesData.value = repoBody.size
+                        var star = 0
+                        for (repo in repoBody)
+                            star += repo.stargazers_count
+                        _starCount.value = star
+                        repositoryData = repoBody
+                    }
+                }
+                catch(t: Throwable) {
+                    Log.d("FetchError", "${t.message}")
+                }
             }
-
-            override fun onFailure(call: Call<ProfileData?>, t: Throwable) {
-                Log.d("ProfileFragment", "${t.message}")
-            }
-        })
-
+        }
     }
-
 }

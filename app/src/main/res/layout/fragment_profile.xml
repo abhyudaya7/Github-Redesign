@@ -40,16 +40,29 @@
                     android:layout_height="match_parent">
 
 
-                    <ImageView
+<!--                    <ImageView-->
+<!--                        android:id="@+id/profile_image"-->
+<!--                        android:layout_width="118dp"-->
+<!--                        android:layout_height="107dp"-->
+<!--                        android:layout_marginTop="72dp"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintHorizontal_bias="0.498"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        tools:src="@tools:sample/avatars" />-->
+
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profile_image"
                         android:layout_width="118dp"
                         android:layout_height="107dp"
-                        android:layout_marginTop="72dp"
+                        app:civ_border_color="#FF000000"
+                        app:civ_border_width="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.498"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@tools:sample/avatars" />
+                        app:layout_constraintVertical_bias="0.275" />
 
                     <TextView
                         android:id="@+id/name"
@@ -83,6 +96,7 @@
                         android:text="@{profileViewModel.bio}"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
+                        android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.498"
@@ -102,7 +116,7 @@
                     android:id="@+id/repositories_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{profileViewModel.repositoriesData.toString()}"
+                    android:text="@{profileViewModel.repositoriesData}"
                     android:textAlignment="center"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView6"
@@ -127,7 +141,7 @@
                     android:id="@+id/stars_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{profileViewModel.starCount.toString()}"
+                    android:text="@{profileViewModel.starCount}"
                     android:textAlignment="center"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView8"
@@ -152,7 +166,7 @@
                     android:id="@+id/followers_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{profileViewModel.followers.toString()}"
+                    android:text="@{profileViewModel.followers}"
                     android:textAlignment="center"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView10"
@@ -178,7 +192,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@{profileViewModel.following.toString()}"
+                    android:text="@{profileViewModel.following}"
                     android:textAlignment="center"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"

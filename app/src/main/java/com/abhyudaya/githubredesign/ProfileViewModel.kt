@@ -18,16 +18,16 @@ class ProfileViewModel: ViewModel() {
     val login: LiveData<String> get() = _login
     private val _bio = MutableLiveData<String>("")
     val bio: LiveData<String> get() = _bio
-    private val _followers = MutableLiveData<Int>(0)
-    val followers: LiveData<Int> get() = _followers
-    private val _following = MutableLiveData<Int>(0)
-    val following : LiveData<Int> get() = _following
+    private val _followers = MutableLiveData<String>("")
+    val followers: LiveData<String> get() = _followers
+    private val _following = MutableLiveData<String>("")
+    val following : LiveData<String> get() = _following
     private val _avatarUrl = MutableLiveData<String>("/")
     val avatarUrl : LiveData<String> = _avatarUrl
-    private val _repositoriesData = MutableLiveData<Int>(0)
-    val repositoriesData: LiveData<Int> get() = _repositoriesData
-    private val _starCount = MutableLiveData<Int>(0)
-    val starCount: LiveData<Int> get() = _starCount
+    private val _repositoriesData = MutableLiveData<String>("")
+    val repositoriesData: LiveData<String> get() = _repositoriesData
+    private val _starCount = MutableLiveData<String>("")
+    val starCount: LiveData<String> get() = _starCount
 
     lateinit var user: String
     lateinit var repositoryData: List<ReposData>
@@ -49,14 +49,20 @@ class ProfileViewModel: ViewModel() {
                         _name.value = profileBody.name
                         _login.value = profileBody.login
                         _bio.value = profileBody.bio
-                        _followers.value = profileBody.followers
+                        _followers.value = profileBody.followers.toString()
+                        if (profileBody.followers > 999)
+                            _followers.value = "${profileBody.followers/1000}k"
                         _avatarUrl.value = profileBody.avatar_url
-                        _following.value = profileBody.following
-                        _repositoriesData.value = repoBody.size
+                        _following.value = profileBody.following.toString()
+                        if (profileBody.following > 999)
+                            _following.value = "${profileBody.following/1000}k"
+                        _repositoriesData.value = repoBody.size.toString()
                         var star = 0
                         for (repo in repoBody)
                             star += repo.stargazers_count
-                        _starCount.value = star
+                        _starCount.value = star.toString()
+                        if (star > 999)
+                            _starCount.value = "${star/1000}k"
                         repositoryData = repoBody
                     }
                 }

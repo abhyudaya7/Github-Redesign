@@ -1,13 +1,12 @@
-package com.abhyudaya.githubredesign
+package com.abhyudaya.githubredesign.viewModel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.abhyudaya.githubredesign.data.ReposData
+import com.abhyudaya.githubredesign.retrofit.RetrofitFactory
+import kotlinx.coroutines.*
 
 
 class ProfileViewModel: ViewModel() {
@@ -38,8 +37,17 @@ class ProfileViewModel: ViewModel() {
         val repoService = RetrofitFactory.makeRetrofitService()
 
         CoroutineScope(Dispatchers.IO).launch {
-            val profileResponse = profileService.getProfileData(user)
-            val repoResponse = repoService.getReposData()
+            
+            val profileRespJob = async {
+                profileService.getProfileData(user)
+            }
+
+            val repoRespJob = async {
+                repoService.getReposData()
+            }
+
+            val profileResponse = profileRespJob.await()
+            val repoResponse = repoRespJob.await()
 
             withContext(Dispatchers.Main) {
                 try{

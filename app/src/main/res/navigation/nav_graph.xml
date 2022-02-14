@@ -6,7 +6,7 @@
     app:startDestination="@id/inputFragment">
     <fragment
         android:id="@+id/inputFragment"
-        android:name="com.abhyudaya.githubredesign.InputFragment"
+        android:name="com.abhyudaya.githubredesign.user_interface.InputFragment"
         android:label="fragment_input"
         tools:layout="@layout/fragment_input" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.abhyudaya.githubredesign.ProfileFragment"
+        android:name="com.abhyudaya.githubredesign.user_interface.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <argument

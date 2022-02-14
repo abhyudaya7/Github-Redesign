@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ProfileFragment">
+    tools:context=".user_interface.ProfileFragment">
 
     <data>
         <variable
             name="profileViewModel"
-            type="com.abhyudaya.githubredesign.ProfileViewModel" />
+            type="com.abhyudaya.githubredesign.viewModel.ProfileViewModel" />
     </data>
 
 

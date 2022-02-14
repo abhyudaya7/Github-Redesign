@@ -1,4 +1,4 @@
-package com.abhyudaya.githubredesign
+package com.abhyudaya.githubredesign.user_interface
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

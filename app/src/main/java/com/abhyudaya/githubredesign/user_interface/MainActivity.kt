@@ -1,7 +1,8 @@
-package com.abhyudaya.githubredesign
+package com.abhyudaya.githubredesign.user_interface
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.abhyudaya.githubredesign.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

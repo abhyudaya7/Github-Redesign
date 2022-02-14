@@ -1,6 +1,7 @@
-package com.abhyudaya.githubredesign
+package com.abhyudaya.githubredesign.retrofit
 
-import retrofit2.Call
+import com.abhyudaya.githubredesign.data.ProfileData
+import com.abhyudaya.githubredesign.data.ReposData
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Url

@@ -1,4 +1,4 @@
-package com.abhyudaya.githubredesign
+package com.abhyudaya.githubredesign.data
 
 data class ReposData(
     val name: String,

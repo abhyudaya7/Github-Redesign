@@ -27,9 +27,13 @@ class ProfileViewModel: ViewModel() {
     val repositoriesData: LiveData<String> get() = _repositoriesData
     private val _starCount = MutableLiveData<String>("")
     val starCount: LiveData<String> get() = _starCount
+    private val _repoList = MutableLiveData<List<ReposData>>()
+    val repoList: LiveData<List<ReposData>> get() = _repoList
 
+    init {
+        _repoList.value = emptyList()
+    }
     lateinit var user: String
-    lateinit var repositoryData: List<ReposData>
     fun getDataFromApi() {
         RetrofitFactory.BASE_URL = "https://api.github.com/users/"
         val profileService = RetrofitFactory.makeRetrofitService()
@@ -58,20 +62,20 @@ class ProfileViewModel: ViewModel() {
                         _login.value = profileBody.login
                         _bio.value = profileBody.bio
                         _followers.value = profileBody.followers.toString()
-                        if (profileBody.followers > 999)
+                        if (profileBody.followers > 999) // util function to be implemented here
                             _followers.value = "${profileBody.followers/1000}k"
                         _avatarUrl.value = profileBody.avatar_url
                         _following.value = profileBody.following.toString()
-                        if (profileBody.following > 999)
+                        if (profileBody.following > 999) // util function to be implemented here
                             _following.value = "${profileBody.following/1000}k"
                         _repositoriesData.value = repoBody.size.toString()
                         var star = 0
                         for (repo in repoBody)
                             star += repo.stargazers_count
                         _starCount.value = star.toString()
-                        if (star > 999)
+                        if (star > 999) // util function to be implemented here
                             _starCount.value = "${star/1000}k"
-                        repositoryData = repoBody
+                        _repoList.value = repoBody
                     }
                 }
                 catch(t: Throwable) {

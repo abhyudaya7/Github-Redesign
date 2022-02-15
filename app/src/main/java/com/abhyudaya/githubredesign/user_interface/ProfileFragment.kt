@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.abhyudaya.githubredesign.adapter.ViewPagerAdapter
 import com.abhyudaya.githubredesign.viewModel.ProfileViewModel
 import com.abhyudaya.githubredesign.databinding.FragmentProfileBinding
+import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
 
 
@@ -25,16 +28,28 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+        viewModel = ViewModelProvider(activity as AppCompatActivity).get(ProfileViewModel::class.java)
         val userName = ProfileFragmentArgs.fromBundle(requireArguments()).userName
         viewModel.user = userName
         binding.profileViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.getDataFromApi()
-        viewModel.avatarUrl.observe(viewLifecycleOwner, Observer { newVal ->
-            Picasso.get().load(newVal).into(binding.profileImage)
+        viewModel.avatarUrl.observe(viewLifecycleOwner, Observer { imageUrl ->
+            Picasso.get().load(imageUrl).into(binding.profileImage)
         })
+
+        val adapter = activity?.let { fragmentActivity ->
+            ViewPagerAdapter(fragmentActivity.supportFragmentManager, lifecycle)
+        }
+        binding.viewPager.adapter = adapter
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            when(position) {
+                0 -> tab.text = "Pinned Repositories"
+                1 -> tab.text = "Repositories"
+            }
+        }.attach()
+
+        viewModel.getDataFromApi()
 
         return view
     }

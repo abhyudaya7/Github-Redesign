@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.abhyudaya.githubredesign.adapter.RecyclerViewAdapter
 import com.abhyudaya.githubredesign.databinding.FragmentRepoDisplayBinding
@@ -42,7 +43,17 @@ class RepoDisplayFragment : Fragment() {
                 RecyclerViewAdapter(fragmentActivity.baseContext,repoList)
             }!!
             binding.recyclerView.adapter = recyclerViewAdapter
+
+            recyclerViewAdapter.setOnItemClickListener(object: RecyclerViewAdapter.onItemClickListener{
+                override fun onItemClick(position: Int) {
+                    val action = ProfileFragmentDirections
+                        .actionProfileFragmentToContributorFragment(repoList[position].name, repoList[position].url)
+                    view.findNavController().navigate(action)
+                }
+            })
         })
+
+
 
         return view
     }

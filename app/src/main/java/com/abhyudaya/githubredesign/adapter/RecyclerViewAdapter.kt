@@ -12,25 +12,34 @@ import com.abhyudaya.githubredesign.data.ReposData
 class RecyclerViewAdapter(val context: Context, val repoList: List<ReposData>)
     :RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var repoName: TextView
-        var repoDescription: TextView
-        var language: TextView
-        var starCount: TextView
-        var forkCount: TextView
+    lateinit var mListener: onItemClickListener
+
+    interface onItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    fun setOnItemClickListener(listener: onItemClickListener) {
+        mListener = listener
+    }
+
+    class ViewHolder(itemView: View, listener: onItemClickListener): RecyclerView.ViewHolder(itemView) {
+        var repoName: TextView = itemView.findViewById(R.id.repo_name)
+        var repoDescription: TextView = itemView.findViewById(R.id.repo_description)
+        var language: TextView = itemView.findViewById(R.id.language)
+        var starCount: TextView = itemView.findViewById(R.id.star_count)
+        var forkCount: TextView = itemView.findViewById(R.id.fork_count)
 
         init {
-            repoName = itemView.findViewById(R.id.repo_name)
-            repoDescription = itemView.findViewById(R.id.repo_description)
-            language = itemView.findViewById(R.id.language)
-            starCount = itemView.findViewById(R.id.star_count)
-            forkCount = itemView.findViewById(R.id.fork_count)
+            itemView.setOnClickListener {
+                listener.onItemClick(adapterPosition)
+            }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var itemView = LayoutInflater.from(context).inflate(R.layout.repo_layout, parent, false)
-        return ViewHolder(itemView)
+        return ViewHolder(itemView, mListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

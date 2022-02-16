@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.abhyudaya.githubredesign.utils.Utils
 import com.abhyudaya.githubredesign.data.ReposData
 import com.abhyudaya.githubredesign.retrofit.RetrofitFactory
 import kotlinx.coroutines.*
@@ -33,6 +34,9 @@ class ProfileViewModel: ViewModel() {
     init {
         _repoList.value = emptyList()
     }
+
+
+
     lateinit var user: String
     fun getDataFromApi() {
         RetrofitFactory.BASE_URL = "https://api.github.com/users/"
@@ -61,20 +65,14 @@ class ProfileViewModel: ViewModel() {
                         _name.value = profileBody.name
                         _login.value = profileBody.login
                         _bio.value = profileBody.bio
-                        _followers.value = profileBody.followers.toString()
-                        if (profileBody.followers > 999) // util function to be implemented here
-                            _followers.value = "${profileBody.followers/1000}k"
+                        _followers.value = Utils().getFormattedData(profileBody.followers)
                         _avatarUrl.value = profileBody.avatar_url
-                        _following.value = profileBody.following.toString()
-                        if (profileBody.following > 999) // util function to be implemented here
-                            _following.value = "${profileBody.following/1000}k"
-                        _repositoriesData.value = repoBody.size.toString()
+                        _following.value = Utils().getFormattedData(profileBody.following)
+                        _repositoriesData.value = Utils().getFormattedData(repoBody.size)
                         var star = 0
                         for (repo in repoBody)
                             star += repo.stargazers_count
-                        _starCount.value = star.toString()
-                        if (star > 999) // util function to be implemented here
-                            _starCount.value = "${star/1000}k"
+                        _starCount.value = Utils().getFormattedData(star)
                         _repoList.value = repoBody
                     }
                 }

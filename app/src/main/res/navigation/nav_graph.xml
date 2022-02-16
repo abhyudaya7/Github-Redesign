@@ -21,5 +21,28 @@
         <argument
             android:name="userName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_profileFragment_to_contributorFragment"
+            app:destination="@id/contributorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/repoDisplayFragment"
+        android:name="com.abhyudaya.githubredesign.user_interface.RepoDisplayFragment"
+        android:label="fragment_repo_display"
+        tools:layout="@layout/fragment_repo_display" />
+    <fragment
+        android:id="@+id/contributorFragment"
+        android:name="com.abhyudaya.githubredesign.user_interface.ContributorFragment"
+        android:label="fragment_contributor"
+        tools:layout="@layout/fragment_contributor" >
+        <argument
+            android:name="repoName"
+            app:argType="string" />
+        <argument
+            android:name="url"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_contributorFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>

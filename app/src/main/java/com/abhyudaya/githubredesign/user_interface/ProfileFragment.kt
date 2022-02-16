@@ -34,10 +34,6 @@ class ProfileFragment : Fragment() {
         binding.profileViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.avatarUrl.observe(viewLifecycleOwner, Observer { imageUrl ->
-            Picasso.get().load(imageUrl).into(binding.profileImage)
-        })
-
         val adapter = activity?.let { fragmentActivity ->
             ViewPagerAdapter(fragmentActivity.supportFragmentManager, lifecycle)
         }
@@ -48,6 +44,13 @@ class ProfileFragment : Fragment() {
                 1 -> tab.text = "Repositories"
             }
         }.attach()
+
+        viewModel.avatarUrl.observe(viewLifecycleOwner, Observer { imageUrl ->
+            Picasso.get().load(imageUrl).into(binding.profileImage)
+        })
+        binding.fab.setOnClickListener {
+            binding.fab.hide()
+        }
 
         viewModel.getDataFromApi()
 

@@ -10,7 +10,7 @@
         <entry key="app/src/main/res/layout/contributor_layout.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_contributor.xml" value="0.2543822146216332" />
         <entry key="app/src/main/res/layout/fragment_input.xml" value="0.29583333333333334" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.45" />
         <entry key="app/src/main/res/layout/fragment_repo_display.xml" value="0.25" />
         <entry key="app/src/main/res/layout/repo_layout.xml" value="0.45" />
       </map>

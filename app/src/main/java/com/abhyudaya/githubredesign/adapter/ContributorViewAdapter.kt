@@ -27,6 +27,7 @@ class ContributorViewAdapter(val context: Context, val contributorList: List<Con
         class ViewHolder(itemView: View, listener: onItemClickListener): RecyclerView.ViewHolder(itemView) {
             var contributorName: TextView = itemView.findViewById(R.id.contributor_name)
             var contributorImage: CircleImageView = itemView.findViewById(R.id.contributor_profile_image)
+            var contributionNumber: TextView = itemView.findViewById(R.id.contributors_number)
 
             init {
                 itemView.setOnClickListener {
@@ -43,6 +44,7 @@ class ContributorViewAdapter(val context: Context, val contributorList: List<Con
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.contributorName.text = contributorList[position].login
         Picasso.get().load(contributorList[position].avatar_url).into(holder.contributorImage)
+        holder.contributionNumber.text = "${contributorList[position].contributions.toString()} contributions"
     }
 
     override fun getItemCount(): Int {

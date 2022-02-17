@@ -1,13 +1,18 @@
 package com.abhyudaya.githubredesign.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.abhyudaya.githubredesign.R
 import com.abhyudaya.githubredesign.data.ReposData
+import com.abhyudaya.githubredesign.utils.Utils
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 
 class RecyclerViewAdapter(val context: Context, val repoList: List<ReposData>)
     :RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
@@ -28,6 +33,8 @@ class RecyclerViewAdapter(val context: Context, val repoList: List<ReposData>)
         var language: TextView = itemView.findViewById(R.id.language)
         var starCount: TextView = itemView.findViewById(R.id.star_count)
         var forkCount: TextView = itemView.findViewById(R.id.fork_count)
+        var lastUpdated: TextView = itemView.findViewById(R.id.last_updated_info)
+        var chipGrp: ChipGroup = itemView.findViewById(R.id.chip_group)
 
         init {
             itemView.setOnClickListener {
@@ -48,6 +55,15 @@ class RecyclerViewAdapter(val context: Context, val repoList: List<ReposData>)
         holder.language.text = repoList[position].language
         holder.starCount.text = repoList[position].stargazers_count.toString()
         holder.forkCount.text = repoList[position].forks_count.toString()
+        holder.lastUpdated.text = Utils().getLastUpdatedAt(repoList[position].updated_at)
+
+        for (item in repoList[position].topics) {
+            if (item.isNotEmpty()) {
+                var chip = Chip(context)
+                chip.text = item
+                holder.chipGrp.addView(chip)
+            }
+        }
     }
 
     override fun getItemCount(): Int {

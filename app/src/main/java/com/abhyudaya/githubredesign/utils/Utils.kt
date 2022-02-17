@@ -1,5 +1,7 @@
 package com.abhyudaya.githubredesign.utils
 
+import java.util.*
+
 class Utils {
 
     fun getFormattedData(num: Int): String {
@@ -15,24 +17,45 @@ class Utils {
 
     fun getLastUpdatedAt(date: String): String {
         // Input format: 2021-06-14T18:42:39Z
-        // Output format: 14-Jun-2021
         val formattedDate = date.subSequence(0, date.indexOf('T'))
         val dateList = formattedDate.split('-')
-        val month: String = when(dateList[1].toInt()) {
-            1 -> "Jan"
-            2 -> "Feb"
-            3 -> "Mar"
-            4 -> "Apr"
-            5 -> "May"
-            6 -> "Jun"
-            7 -> "Jul"
-            8 -> "Aug"
-            9 -> "Sep"
-            10 -> "Oct"
-            11 -> "Nov"
-            12 -> "Dec"
-            else -> ""
+        val formattedTime = date.subSequence(date.indexOf('T')+1, date.indexOf('Z'))
+        val timeList = formattedTime.split(':')
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        val hr = c.get(Calendar.HOUR_OF_DAY)
+        var interval: Int
+
+        if (year != dateList[0].toInt()){
+            interval = year - dateList[0].toInt()
+            if (interval == 1)
+                return "Updated $interval year ago"
+            return "Updated $interval years ago"
         }
-        return "${dateList[2]}-${month}-${dateList[0]}"
+
+        if (month+1 != dateList[1].toInt()){
+            interval = month+1 - dateList[1].toInt()
+            if (interval == 1)
+                return "Updated $interval month ago"
+            return "Updated $interval months ago"
+        }
+
+        if (day != dateList[2].toInt()) {
+            interval = day - dateList[2].toInt()
+            if (interval == 1)
+                return "Updated $interval day ago"
+            return "Updated $interval days ago"
+        }
+
+        if (hr != timeList[0].toInt()) {
+            interval = hr - timeList[0].toInt()
+            if (interval == 1)
+                return "Updated $interval hour ago"
+            return "Updated $interval hours ago"
+        }
+
+        return "Updated few minutes ago"
     }
 }

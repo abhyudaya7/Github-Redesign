@@ -7,5 +7,6 @@ data class ReposData(
     val language: String,
     val forks_count: Int,
     val stargazers_count: Int,
-    val updated_at: String
+    val updated_at: String,
+    val topics: List<String>
 )

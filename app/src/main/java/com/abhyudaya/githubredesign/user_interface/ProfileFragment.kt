@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso
 class ProfileFragment : Fragment() {
     var _binding: FragmentProfileBinding? = null
     val binding get() = _binding!!
-
+    lateinit var userName: String
     lateinit var viewModel: ProfileViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +29,7 @@ class ProfileFragment : Fragment() {
         val view = binding.root
 
         viewModel = ViewModelProvider(activity as AppCompatActivity).get(ProfileViewModel::class.java)
-        val userName = ProfileFragmentArgs.fromBundle(requireArguments()).userName
+        userName = ProfileFragmentArgs.fromBundle(requireArguments()).userName
         viewModel.user = userName
         binding.profileViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner

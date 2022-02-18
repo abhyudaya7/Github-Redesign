@@ -5,16 +5,19 @@ import com.abhyudaya.githubredesign.data.ProfileData
 import com.abhyudaya.githubredesign.data.ReposData
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Url
+import retrofit2.http.Path
 
 interface ProfileApiInterface{
 
-    @GET
-    suspend fun getProfileData(@Url str:String): Response<ProfileData>
+    @GET("users/{user}")
+    suspend fun getProfileData(@Path("user") userID:String): Response<ProfileData>
 
-    @GET("repos")
-    suspend fun getReposData(): Response<List<ReposData>>
+    @GET("users/{user}/repos")
+    suspend fun getReposData(@Path("user") userID: String): Response<List<ReposData>>
 
-    @GET("contributors")
-    suspend fun getContributorData(): Response<List<ContributorData>>
+    @GET("repos/{user}/{repo}/contributors")
+    suspend fun getContributorData(
+        @Path("user") userID: String,
+        @Path("repo") repoName: String
+    ): Response<List<ContributorData>>
 }

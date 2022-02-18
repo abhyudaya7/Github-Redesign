@@ -3,27 +3,23 @@ package com.abhyudaya.githubredesign.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.abhyudaya.githubredesign.retrofit.Repository
 import com.abhyudaya.githubredesign.data.ContributorData
-import com.abhyudaya.githubredesign.retrofit.RetrofitFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class ContributorViewModel: ViewModel() {
-    lateinit var repoName: String
-    lateinit var url: String
+class ContributorViewModel(private val repository: Repository): ViewModel() {
     private val _contributorList = MutableLiveData<List<ContributorData>>(emptyList())
     val contributorList: LiveData<List<ContributorData>> get() = _contributorList
 
 
-    fun getContributorFromApi() {
-        RetrofitFactory.BASE_URL = "${url}/"
-        val contributorService = RetrofitFactory.makeRetrofitService()
+    fun getContributorFromApi(userID: String, repoName: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
-            val contributorResponse = contributorService.getContributorData()
+            val contributorResponse = repository.getContributorData(userID, repoName)
             withContext(Dispatchers.Main) {
                 try {
                     if (contributorResponse.isSuccessful) {

@@ -1,12 +1,10 @@
 package com.abhyudaya.githubredesign.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.abhyudaya.githubredesign.R
 import com.abhyudaya.githubredesign.data.ReposData
@@ -56,13 +54,11 @@ class RecyclerViewAdapter(val context: Context, val repoList: List<ReposData>)
         holder.starCount.text = repoList[position].stargazers_count.toString()
         holder.forkCount.text = repoList[position].forks_count.toString()
         holder.lastUpdated.text = Utils().getLastUpdatedAt(repoList[position].updated_at)
-
+        holder.chipGrp.removeAllViews()
         for (item in repoList[position].topics) {
-            if (item.isNotEmpty()) {
-                var chip = Chip(context)
-                chip.text = item
-                holder.chipGrp.addView(chip)
-            }
+            var chip = Chip(holder.itemView.context)
+            chip.text = item
+            holder.chipGrp.addView(chip)
         }
     }
 

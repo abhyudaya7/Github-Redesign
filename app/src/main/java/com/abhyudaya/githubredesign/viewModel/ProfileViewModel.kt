@@ -4,13 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.abhyudaya.githubredesign.retrofit.Repository
 import com.abhyudaya.githubredesign.utils.Utils
 import com.abhyudaya.githubredesign.data.ReposData
-import com.abhyudaya.githubredesign.retrofit.RetrofitFactory
 import kotlinx.coroutines.*
 
 
-class ProfileViewModel: ViewModel() {
+class ProfileViewModel(private val repository: Repository): ViewModel() {
 
     private val _name = MutableLiveData<String>("")
     val name: LiveData<String> get() = _name
@@ -35,23 +35,16 @@ class ProfileViewModel: ViewModel() {
         _repoList.value = emptyList()
     }
 
-
-
-    lateinit var user: String
-    fun getDataFromApi() {
-        RetrofitFactory.BASE_URL = "https://api.github.com/users/"
-        val profileService = RetrofitFactory.makeRetrofitService()
-        RetrofitFactory.BASE_URL = "https://api.github.com/users/$user/"
-        val repoService = RetrofitFactory.makeRetrofitService()
+    fun getDataFromApi(user: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
             
             val profileRespJob = async {
-                profileService.getProfileData(user)
+                repository.getProfileData(user)
             }
 
             val repoRespJob = async {
-                repoService.getReposData()
+                repository.getReposData(user)
             }
 
             val profileResponse = profileRespJob.await()

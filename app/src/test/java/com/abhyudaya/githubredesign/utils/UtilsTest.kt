@@ -25,4 +25,10 @@ class UtilsTest{
         assertEquals("Updated 3 days ago", Utils().getLastUpdatedAt("2022-02-14T18:42:39Z"))
         assertEquals("Updated few minutes ago", Utils().getLastUpdatedAt("2022-02-17T23:42:39Z"))
     }
+
+    @Test
+    fun getUserIdTest() {
+        assertEquals("vipinhelloindia", Utils().getUserIdFromUrl("https://api.github.com/repos/vipinhelloindia/ActionBarSherlock"))
+        assertEquals("greenrobot", Utils().getUserIdFromUrl("https://api.github.com/repos/greenrobot/ActionBarSherlock"))
+    }
 }

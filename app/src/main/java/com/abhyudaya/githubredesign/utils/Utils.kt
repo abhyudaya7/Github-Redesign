@@ -58,4 +58,10 @@ class Utils {
 
         return "Updated few minutes ago"
     }
+
+    fun getUserIdFromUrl(url: String): String {
+        val tempUrl = url.subSequence(0, url.lastIndexOf('/'))
+        val userId = tempUrl.subSequence(tempUrl.lastIndexOf('/')+1, tempUrl.length)
+        return userId.toString()
+    }
 }

@@ -38,9 +38,10 @@ class MainActivityTest {
         Espresso.closeSoftKeyboard()
         onView(withId(R.id.button)).perform(click())
 
-        runBlocking {
-            delay(3000)
-        }
+//        runBlocking {
+//            delay(3000)
+//        } apply idling resource
+
         onView(withText("@$userName")).check(matches(isDisplayed()))
     }
 }

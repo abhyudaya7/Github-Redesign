@@ -4,12 +4,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitFactory {
-    lateinit var BASE_URL: String
 
     fun makeRetrofitService(): ProfileApiInterface {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
+            .baseUrl("https://api.github.com/")
             .build()
             .create(ProfileApiInterface::class.java)
     }

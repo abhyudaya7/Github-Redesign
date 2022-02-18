@@ -9,9 +9,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.abhyudaya.githubredesign.viewModel.ContributorViewModelFactory
+import com.abhyudaya.githubredesign.retrofit.RepositoryImpl
 import com.abhyudaya.githubredesign.adapter.ContributorViewAdapter
 import com.abhyudaya.githubredesign.viewModel.ContributorViewModel
 import com.abhyudaya.githubredesign.databinding.FragmentContributorBinding
+import com.abhyudaya.githubredesign.retrofit.RetrofitFactory
+import com.abhyudaya.githubredesign.utils.Utils
 
 
 class ContributorFragment : Fragment() {
@@ -20,6 +24,8 @@ class ContributorFragment : Fragment() {
     lateinit var viewModel: ContributorViewModel
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var contributorViewAdapter: ContributorViewAdapter
+    lateinit var viewModelFactory: ContributorViewModelFactory
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,9 +35,9 @@ class ContributorFragment : Fragment() {
         val view = binding.root
         val repoName = ContributorFragmentArgs.fromBundle(requireArguments()).repoName
         val url = ContributorFragmentArgs.fromBundle(requireArguments()).url
-        viewModel = ViewModelProvider(this).get(ContributorViewModel::class.java)
-        viewModel.repoName = repoName
-        viewModel.url = url
+        val repository = RepositoryImpl(RetrofitFactory.makeRetrofitService())
+        viewModelFactory = ContributorViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ContributorViewModel::class.java)
 
         binding.contributorView.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(this.context)
@@ -52,8 +58,8 @@ class ContributorFragment : Fragment() {
                 }
             })
         })
-
-        viewModel.getContributorFromApi()
+        val userId = Utils().getUserIdFromUrl(url)
+        viewModel.getContributorFromApi(userId, repoName)
         return view
     }
 

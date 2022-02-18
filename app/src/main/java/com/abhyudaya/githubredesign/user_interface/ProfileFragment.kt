@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.abhyudaya.githubredesign.viewModel.ProfileViewModelFactory
+import com.abhyudaya.githubredesign.retrofit.RepositoryImpl
 import com.abhyudaya.githubredesign.adapter.ViewPagerAdapter
 import com.abhyudaya.githubredesign.viewModel.ProfileViewModel
 import com.abhyudaya.githubredesign.databinding.FragmentProfileBinding
+import com.abhyudaya.githubredesign.retrofit.RetrofitFactory
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
 
@@ -20,6 +23,7 @@ class ProfileFragment : Fragment() {
     val binding get() = _binding!!
     lateinit var userName: String
     lateinit var viewModel: ProfileViewModel
+    lateinit var viewModelFactory: ProfileViewModelFactory
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,9 +32,13 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        viewModel = ViewModelProvider(activity as AppCompatActivity).get(ProfileViewModel::class.java)
         userName = ProfileFragmentArgs.fromBundle(requireArguments()).userName
-        viewModel.user = userName
+
+        val repository = RepositoryImpl(RetrofitFactory.makeRetrofitService())
+        viewModelFactory = ProfileViewModelFactory(repository)
+        viewModel = ViewModelProvider(activity as AppCompatActivity, viewModelFactory)
+            .get(ProfileViewModel::class.java)
+
         binding.profileViewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -52,7 +60,7 @@ class ProfileFragment : Fragment() {
             binding.fab.hide()
         }
 
-        viewModel.getDataFromApi()
+        viewModel.getDataFromApi(userName)
 
         return view
     }

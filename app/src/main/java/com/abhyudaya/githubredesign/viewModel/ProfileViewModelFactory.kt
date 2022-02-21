@@ -6,10 +6,10 @@ import com.abhyudaya.githubredesign.retrofit.Repository
 import java.lang.IllegalArgumentException
 
 
-class ProfileViewModelFactory(private val repository: Repository)
+ class ProfileViewModelFactory(private val repository: Repository)
     :ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
             return ProfileViewModel(repository) as T
         }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.abhyudaya.githubredesign.retrofit.Repository
 import com.abhyudaya.githubredesign.utils.Utils
 import com.abhyudaya.githubredesign.data.ReposData
+import com.abhyudaya.githubredesign.utils.EspressoIdlingResource
 import kotlinx.coroutines.*
 
 
@@ -30,26 +31,34 @@ class ProfileViewModel(private val repository: Repository): ViewModel() {
     val starCount: LiveData<String> get() = _starCount
     private val _repoList = MutableLiveData<List<ReposData>>()
     val repoList: LiveData<List<ReposData>> get() = _repoList
+    private val _userNotFound = MutableLiveData<Boolean>(false)
+    val userNotFound: LiveData<Boolean> get() = _userNotFound
 
     init {
         _repoList.value = emptyList()
     }
 
     fun getDataFromApi(user: String) {
-
         CoroutineScope(Dispatchers.IO).launch {
             
             val profileRespJob = async {
+                EspressoIdlingResource.increment() // incrementing idling res for network call
                 repository.getProfileData(user)
             }
 
             val repoRespJob = async {
+                EspressoIdlingResource.increment()
                 repository.getReposData(user)
             }
 
             val profileResponse = profileRespJob.await()
+            EspressoIdlingResource.decrement() // decrementing the idling res after network req gets completed
             val repoResponse = repoRespJob.await()
-
+            EspressoIdlingResource.decrement()
+            // checking the status code for user not found
+            if (profileResponse.code() == 404) {
+                _userNotFound.postValue(true)
+            }
             withContext(Dispatchers.Main) {
                 try{
                     if (profileResponse.isSuccessful and repoResponse.isSuccessful) {
@@ -61,7 +70,7 @@ class ProfileViewModel(private val repository: Repository): ViewModel() {
                         _followers.value = Utils().getFormattedData(profileBody.followers)
                         _avatarUrl.value = profileBody.avatar_url
                         _following.value = Utils().getFormattedData(profileBody.following)
-                        _repositoriesData.value = Utils().getFormattedData(repoBody.size)
+                        _repositoriesData.value = Utils().getFormattedData(profileBody.public_repos)
                         var star = 0
                         for (repo in repoBody)
                             star += repo.stargazers_count

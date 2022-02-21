@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.abhyudaya.githubredesign.retrofit.Repository
 import java.lang.IllegalArgumentException
 
-class ContributorViewModelFactory(private val repository: Repository)
+ class ContributorViewModelFactory(private val repository: Repository)
     :ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ContributorViewModel::class.java)) {
             return ContributorViewModel(repository) as T
         }

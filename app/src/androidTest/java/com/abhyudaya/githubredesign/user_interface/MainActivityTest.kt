@@ -5,6 +5,7 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -12,6 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.abhyudaya.githubredesign.R
+import com.abhyudaya.githubredesign.utils.EspressoIdlingResource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
@@ -29,6 +31,8 @@ class MainActivityTest {
     fun setup() {
         scenario = launchActivity()
         scenario.moveToState(Lifecycle.State.RESUMED)
+        // registering the idling resource
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
     }
 
     @Test
@@ -40,8 +44,10 @@ class MainActivityTest {
 
 //        runBlocking {
 //            delay(3000)
-//        } apply idling resource
+//        }
 
         onView(withText("@$userName")).check(matches(isDisplayed()))
+        // unregistering the idling resource
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
     }
 }

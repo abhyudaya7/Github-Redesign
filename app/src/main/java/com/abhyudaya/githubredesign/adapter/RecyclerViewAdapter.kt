@@ -1,16 +1,23 @@
 package com.abhyudaya.githubredesign.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.abhyudaya.githubredesign.R
 import com.abhyudaya.githubredesign.data.ReposData
+import com.abhyudaya.githubredesign.user_interface.MainActivity
+import com.abhyudaya.githubredesign.user_interface.ProfileFragmentDirections
+import com.abhyudaya.githubredesign.user_interface.RepoDisplayFragment
 import com.abhyudaya.githubredesign.utils.Utils
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.theme.MaterialComponentsViewInflater
 
 class RecyclerViewAdapter(val context: Context, val repoList: List<ReposData>)
     :RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
@@ -56,8 +63,10 @@ class RecyclerViewAdapter(val context: Context, val repoList: List<ReposData>)
         holder.lastUpdated.text = Utils().getLastUpdatedAt(repoList[position].updated_at)
         holder.chipGrp.removeAllViews()
         for (item in repoList[position].topics) {
-            var chip = Chip(holder.itemView.context)
+            var chip = Chip(holder.chipGrp.context)
             chip.text = item
+            chip.textSize = 10.0f
+            chip.setChipBackgroundColorResource(R.color.buttonColor)
             holder.chipGrp.addView(chip)
         }
     }

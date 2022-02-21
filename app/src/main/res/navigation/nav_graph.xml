@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_profileFragment_to_contributorFragment"
             app:destination="@id/contributorFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_userNotFoundFragment"
+            app:destination="@id/userNotFoundFragment" />
     </fragment>
     <fragment
         android:id="@+id/repoDisplayFragment"
@@ -45,4 +48,9 @@
             android:id="@+id/action_contributorFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/userNotFoundFragment"
+        android:name="com.abhyudaya.githubredesign.user_interface.UserNotFoundFragment"
+        android:label="fragment_user_not_found"
+        tools:layout="@layout/fragment_user_not_found" />
 </navigation>

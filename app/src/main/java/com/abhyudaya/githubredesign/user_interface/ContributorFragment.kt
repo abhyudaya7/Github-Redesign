@@ -37,7 +37,9 @@ class ContributorFragment : Fragment() {
         val url = ContributorFragmentArgs.fromBundle(requireArguments()).url
         val repository = RepositoryImpl(RetrofitFactory.makeRetrofitService())
         viewModelFactory = ContributorViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(ContributorViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory)[ContributorViewModel::class.java]
+
+        binding.contributorToolbar.title = "Contributors"
 
         binding.contributorView.setHasFixedSize(true)
         linearLayoutManager = LinearLayoutManager(this.context)

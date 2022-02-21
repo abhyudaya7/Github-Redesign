@@ -50,16 +50,16 @@
                     android:layout_height="match_parent">
 
 
-<!--                    <ImageView-->
-<!--                        android:id="@+id/profile_image"-->
-<!--                        android:layout_width="118dp"-->
-<!--                        android:layout_height="107dp"-->
-<!--                        android:layout_marginTop="72dp"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintHorizontal_bias="0.498"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        tools:src="@tools:sample/avatars" />-->
+                    <!--                    <ImageView-->
+                    <!--                        android:id="@+id/profile_image"-->
+                    <!--                        android:layout_width="118dp"-->
+                    <!--                        android:layout_height="107dp"-->
+                    <!--                        android:layout_marginTop="72dp"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                        app:layout_constraintHorizontal_bias="0.498"-->
+                    <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                    <!--                        app:layout_constraintTop_toTopOf="parent"-->
+                    <!--                        tools:src="@tools:sample/avatars" />-->
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profile_image"
@@ -120,17 +120,17 @@
                         app:layout_constraintVertical_bias="0.9" />
 
 
-<!--                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
-<!--                        android:id="@+id/fab"-->
-<!--                        android:layout_width="150dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:layout_margin="16dp"-->
-<!--                        android:text="Follow"-->
-<!--                        android:textAlignment="center"-->
-<!--                        android:textSize="10sp"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toBottomOf="@id/bio" />-->
+                    <!--                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
+                    <!--                        android:id="@+id/fab"-->
+                    <!--                        android:layout_width="150dp"-->
+                    <!--                        android:layout_height="40dp"-->
+                    <!--                        android:layout_margin="16dp"-->
+                    <!--                        android:text="Follow"-->
+                    <!--                        android:textAlignment="center"-->
+                    <!--                        android:textSize="10sp"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                    <!--                        app:layout_constraintTop_toBottomOf="@id/bio" />-->
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
 
@@ -257,7 +257,8 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/view_pager" />
+                android:id="@+id/view_pager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

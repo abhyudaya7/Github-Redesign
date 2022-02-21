@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.abhyudaya.githubredesign.viewModel.ProfileViewModelFactory
 import com.abhyudaya.githubredesign.retrofit.RepositoryImpl
 import com.abhyudaya.githubredesign.adapter.ViewPagerAdapter
@@ -52,6 +54,13 @@ class ProfileFragment : Fragment() {
                 1 -> tab.text = "Repositories"
             }
         }.attach()
+
+        viewModel.userNotFound.observe(viewLifecycleOwner, Observer { userNotFound ->
+            if (userNotFound) {
+                val action = ProfileFragmentDirections.actionProfileFragmentToUserNotFoundFragment()
+                view.findNavController().navigate(action)
+            }
+        })
 
         viewModel.avatarUrl.observe(viewLifecycleOwner, Observer { imageUrl ->
             Picasso.get().load(imageUrl).into(binding.profileImage)

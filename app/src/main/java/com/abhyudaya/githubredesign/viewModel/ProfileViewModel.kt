@@ -38,9 +38,9 @@ class ProfileViewModel(private val repository: Repository): ViewModel() {
         _repoList.value = emptyList()
     }
 
-    fun getDataFromApi(user: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            
+    suspend fun getDataFromApi(user: String) {
+        CoroutineScope(Dispatchers.IO).async {
+
             val profileRespJob = async {
                 EspressoIdlingResource.increment() // incrementing idling res for network call
                 repository.getProfileData(user)
@@ -64,24 +64,26 @@ class ProfileViewModel(private val repository: Repository): ViewModel() {
                     if (profileResponse.isSuccessful and repoResponse.isSuccessful) {
                         val profileBody = profileResponse.body()!!
                         val repoBody = repoResponse.body()!!
-                        _name.value = profileBody.name
+                        _name.postValue(profileBody.name)
                         _login.value = profileBody.login
-                        _bio.value = profileBody.bio
-                        _followers.value = Utils().getFormattedData(profileBody.followers)
-                        _avatarUrl.value = profileBody.avatar_url
-                        _following.value = Utils().getFormattedData(profileBody.following)
-                        _repositoriesData.value = Utils().getFormattedData(profileBody.public_repos)
+                        _bio.postValue(profileBody.bio)
+                        _followers.postValue(Utils().getFormattedData(profileBody.followers))
+                        _avatarUrl.postValue(profileBody.avatar_url)
+                        _following.postValue(Utils().getFormattedData(profileBody.following))
+                        _repositoriesData.postValue(Utils().getFormattedData(profileBody.public_repos))
                         var star = 0
                         for (repo in repoBody)
                             star += repo.stargazers_count
-                        _starCount.value = Utils().getFormattedData(star)
-                        _repoList.value = repoBody
+                        _starCount.postValue(Utils().getFormattedData(star))
+                        _repoList.postValue(repoBody)
+                    }else {
+                        Log.d("Response", "Request unsuccessful")
                     }
                 }
                 catch(t: Throwable) {
                     Log.d("FetchError", "${t.message}")
                 }
             }
-        }
+        }.await()
     }
 }

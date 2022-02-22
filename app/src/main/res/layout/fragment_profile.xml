@@ -142,14 +142,14 @@
 
                 <TextView
                     android:id="@+id/repositories_data"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:text="@{profileViewModel.repositoriesData}"
                     android:textAlignment="center"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView6"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.131"
+                    app:layout_constraintHorizontal_bias="0.07"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.424" />
@@ -167,14 +167,14 @@
 
                 <TextView
                     android:id="@+id/stars_data"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:text="@{profileViewModel.starCount}"
                     android:textAlignment="center"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView8"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.367"
+                    app:layout_constraintHorizontal_bias="0.345"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.424" />
@@ -192,14 +192,14 @@
 
                 <TextView
                     android:id="@+id/followers_data"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:text="@{profileViewModel.followers}"
                     android:textAlignment="center"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView10"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.591"
+                    app:layout_constraintHorizontal_bias="0.601"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.424" />
@@ -217,17 +217,17 @@
 
                 <TextView
                     android:id="@+id/following_data"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:text="@{profileViewModel.following}"
                     android:textAlignment="center"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toTopOf="@+id/textView12"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.832"
+                    app:layout_constraintHorizontal_bias="0.884"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.42000002" />
+                    app:layout_constraintVertical_bias="0.424" />
 
                 <TextView
                     android:id="@+id/textView12"

@@ -18,6 +18,9 @@ import com.abhyudaya.githubredesign.databinding.FragmentProfileBinding
 import com.abhyudaya.githubredesign.retrofit.RetrofitFactory
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ProfileFragment : Fragment() {
@@ -68,9 +71,9 @@ class ProfileFragment : Fragment() {
         binding.fab.setOnClickListener {
             binding.fab.hide()
         }
-
-        viewModel.getDataFromApi(userName)
-
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.getDataFromApi(userName)
+        }
         return view
     }
 

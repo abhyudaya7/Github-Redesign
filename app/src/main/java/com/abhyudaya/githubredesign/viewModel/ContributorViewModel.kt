@@ -16,7 +16,7 @@ class ContributorViewModel(private val repository: Repository): ViewModel() {
     val contributorList: LiveData<List<ContributorData>> get() = _contributorList
 
 
-    fun getContributorFromApi(userID: String, repoName: String) {
+    suspend fun getContributorFromApi(userID: String, repoName: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
             val contributorResponse = repository.getContributorData(userID, repoName)
@@ -31,6 +31,6 @@ class ContributorViewModel(private val repository: Repository): ViewModel() {
 
                 }
             }
-        }
+        }.join()
     }
 }

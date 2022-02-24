@@ -1,22 +1,22 @@
 package com.abhyudaya.githubredesign.viewModel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.espresso.IdlingRegistry
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.abhyudaya.githubredesign.getOrAwaitValue
-import com.abhyudaya.githubredesign.retrofit.RepositoryImpl
-import com.abhyudaya.githubredesign.retrofit.RetrofitFactory
-import com.abhyudaya.githubredesign.utils.EspressoIdlingResource
+import com.abhyudaya.githubredesign.data.ProfileData
+import com.abhyudaya.githubredesign.data.ReposData
+import com.abhyudaya.githubredesign.retrofit.Repository
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.*
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
-
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
+import retrofit2.Response
 
 
-@RunWith(AndroidJUnit4::class)
+@RunWith(JUnit4::class)
 class ProfileViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -37,7 +37,7 @@ class ProfileViewModelTest {
         // checks if the repoList received after api is not empty
         val repoList = viewModel.repoList.value
         if (repoList != null) {
-            assertTrue(repoList.isNotEmpty())
+            assertTrue(repoList.size == 2)
         }
     }
 
@@ -45,8 +45,55 @@ class ProfileViewModelTest {
     @Before
     fun setup() {
         user = "greenrobot"
-        val repository = RepositoryImpl(RetrofitFactory.makeRetrofitService())
-        viewModel = ProfileViewModel(repository)
+//        val repository = FakeRepositoryImpl(RetrofitFactory.makeRetrofitService())
+
+        val profileResp: Response<ProfileData> = Response.success(
+            ProfileData(
+                login = user,
+                avatar_url = "/",
+                followers = 100,
+                following = 100,
+                bio = "Fake bio",
+                name = "Fake name",
+                public_repos = 100
+            )
+        )
+
+        val repoResponse: Response<List<ReposData>> = Response.success(
+            listOf<ReposData>(
+                ReposData(
+                    name = "Repo 1",
+                    url = "/",
+                    description = "Fake repo",
+                    language = "Kotlin",
+                    forks_count = 12,
+                    stargazers_count = 24,
+                    updated_at = "Never updated",
+                    topics = emptyList()
+                )
+                ,ReposData(
+                    name = "Repo 2",
+                    url = "/",
+                    description = "Fake repo 2",
+                    language = "Kotlin",
+                    forks_count = 69,
+                    stargazers_count = 72,
+                    updated_at = "Never",
+                    topics = emptyList()
+                ))
+        )
+
+        val mockRepository = mockk<Repository>()
+
+        coEvery {
+            mockRepository.getProfileData(user)
+        } returns profileResp
+
+        coEvery {
+            mockRepository.getReposData(user)
+        } returns repoResponse
+
+        viewModel = ProfileViewModel(mockRepository)
         runBlocking {
             val job = CoroutineScope(Dispatchers.IO).async {
                 viewModel.getDataFromApi(user)

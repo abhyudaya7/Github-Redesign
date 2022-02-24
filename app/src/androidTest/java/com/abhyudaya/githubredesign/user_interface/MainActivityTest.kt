@@ -14,6 +14,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.abhyudaya.githubredesign.R
 import com.abhyudaya.githubredesign.utils.EspressoIdlingResource
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,19 +33,26 @@ class MainActivityTest {
         IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
     }
 
+    @After
+    fun unregister() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+    }
+
     @Test
     fun testInput() {
         val userName = "greenrobot"
         onView(withId(R.id.username)).perform(ViewActions.typeText(userName))
         Espresso.closeSoftKeyboard()
         onView(withId(R.id.button)).perform(click())
-
-//        runBlocking {
-//            delay(3000)
-//        }
-
         onView(withText("@$userName")).check(matches(isDisplayed()))
-        // unregistering the idling resource
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+    }
+
+    @Test
+    fun testRepositories() {
+        val userName = "greenrobot"
+        onView(withId(R.id.username)).perform(ViewActions.typeText(userName))
+        Espresso.closeSoftKeyboard()
+        onView(withId(R.id.button)).perform(click())
+        onView(withText("Repositories")).check(matches(isDisplayed()))
     }
 }

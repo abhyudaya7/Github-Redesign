@@ -13,25 +13,25 @@ import kotlinx.coroutines.*
 
 class ProfileViewModel(private val repository: Repository): ViewModel() {
 
-    private val _name = MutableLiveData<String>("")
+    private val _name = MutableLiveData("")
     val name: LiveData<String> get() = _name
-    private val _login = MutableLiveData<String>("")
+    private val _login = MutableLiveData("")
     val login: LiveData<String> get() = _login
-    private val _bio = MutableLiveData<String>("")
+    private val _bio = MutableLiveData("")
     val bio: LiveData<String> get() = _bio
-    private val _followers = MutableLiveData<String>("")
+    private val _followers = MutableLiveData("")
     val followers: LiveData<String> get() = _followers
-    private val _following = MutableLiveData<String>("")
+    private val _following = MutableLiveData("")
     val following : LiveData<String> get() = _following
-    private val _avatarUrl = MutableLiveData<String>("/")
+    private val _avatarUrl = MutableLiveData("/")
     val avatarUrl : LiveData<String> = _avatarUrl
-    private val _repositoriesData = MutableLiveData<String>("")
+    private val _repositoriesData = MutableLiveData("")
     val repositoriesData: LiveData<String> get() = _repositoriesData
-    private val _starCount = MutableLiveData<String>("")
+    private val _starCount = MutableLiveData("")
     val starCount: LiveData<String> get() = _starCount
     private val _repoList = MutableLiveData<List<ReposData>>()
     val repoList: LiveData<List<ReposData>> get() = _repoList
-    private val _userNotFound = MutableLiveData<Boolean>(false)
+    private val _userNotFound = MutableLiveData(false)
     val userNotFound: LiveData<Boolean> get() = _userNotFound
 
     init {

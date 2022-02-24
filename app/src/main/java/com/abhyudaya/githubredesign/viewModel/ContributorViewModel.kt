@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.abhyudaya.githubredesign.retrofit.Repository
 import com.abhyudaya.githubredesign.data.ContributorData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.abhyudaya.githubredesign.utils.EspressoIdlingResource
+import kotlinx.coroutines.*
 
 
 class ContributorViewModel(private val repository: Repository): ViewModel() {
@@ -19,7 +17,13 @@ class ContributorViewModel(private val repository: Repository): ViewModel() {
     suspend fun getContributorFromApi(userID: String, repoName: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
-            val contributorResponse = repository.getContributorData(userID, repoName)
+            val contributorRespJob = async {
+                EspressoIdlingResource.increment()
+                repository.getContributorData(userID, repoName)
+            }
+
+            val contributorResponse = contributorRespJob.await()
+            EspressoIdlingResource.decrement()
             withContext(Dispatchers.Main) {
                 try {
                     if (contributorResponse.isSuccessful) {

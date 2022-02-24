@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/user_not_found_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User Not Found"

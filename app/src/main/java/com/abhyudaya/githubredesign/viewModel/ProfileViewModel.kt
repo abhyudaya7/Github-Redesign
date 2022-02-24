@@ -39,7 +39,7 @@ class ProfileViewModel(private val repository: Repository): ViewModel() {
     }
 
     suspend fun getDataFromApi(user: String) {
-        CoroutineScope(Dispatchers.IO).async {
+        CoroutineScope(Dispatchers.IO).launch {
 
             val profileRespJob = async {
                 EspressoIdlingResource.increment() // incrementing idling res for network call
@@ -84,6 +84,6 @@ class ProfileViewModel(private val repository: Repository): ViewModel() {
                     Log.d("FetchError", "${t.message}")
                 }
             }
-        }.await()
+        }.join()
     }
 }

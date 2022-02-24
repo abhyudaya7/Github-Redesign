@@ -20,13 +20,14 @@ class ContributorViewModelTest{
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: ContributorViewModel
+    lateinit var contributorResp: Response<List<ContributorData>>
 
     @Before
     fun setup() {
         val userName = "Fake user"
         val repoName = "Fake repo"
 
-        val contributorResp: Response<List<ContributorData>> =
+        contributorResp =
             Response.success(listOf(
                 ContributorData(
                     login = "Contributor 1",
@@ -55,9 +56,9 @@ class ContributorViewModelTest{
     @Test
     fun checkContributorListUpdated() {
         val contributorList = viewModel.contributorList.value
-        if (contributorList != null) {
-            assertTrue(contributorList.isNotEmpty())
-        }
+
+            assertEquals(contributorResp.body(), contributorList)
+
     }
 
 }

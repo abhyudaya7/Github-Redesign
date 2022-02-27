@@ -64,12 +64,12 @@ class MainActivityTest {
         onView(withId(R.id.contributor_view))
             .perform(actionOnItemAtPosition<ContributorViewAdapter.ViewHolder>(0, click()))
 
-        // checking if again profile is displayed
+        // checking if again profile fragment is displayed
         onView(withId(R.id.repositories_data)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun testCompleteFlowWithInvalidUserName() {
+    fun testCompleteFlowForInvalidUserName() {
         val userName = "SomeInvalidUserName"
         onView(withId(R.id.username)).perform(typeText(userName))
         Espresso.closeSoftKeyboard()

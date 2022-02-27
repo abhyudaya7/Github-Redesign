@@ -22,7 +22,7 @@ class FakeRepositoryImpl(private val service: ProfileApiInterface): Repository {
         )
     override suspend fun getReposData(user: String): Response<List<ReposData>> =
         Response.success(
-            listOf<ReposData>(
+            listOf(
                 ReposData(
                     name = "Repo 1",
                     url = "/",

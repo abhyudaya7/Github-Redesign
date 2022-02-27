@@ -20,13 +20,11 @@ class ContributorViewModelTest{
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: ContributorViewModel
-    lateinit var contributorResp: Response<List<ContributorData>>
+    private lateinit var contributorResp: Response<List<ContributorData>>
+    private var mockRepository: Repository = mockk()
 
     @Before
     fun setup() {
-        val userName = "Fake user"
-        val repoName = "Fake repo"
-
         contributorResp =
             Response.success(listOf(
                 ContributorData(
@@ -41,7 +39,14 @@ class ContributorViewModelTest{
                 )
             ))
 
-        val mockRepository = mockk<Repository>()
+//        mockRepository = mockk<Repository>()
+
+    }
+
+    @Test
+    fun checkContributorListUpdated() {
+        val userName = "Fake user"
+        val repoName = "Fake repo"
 
         coEvery {
             mockRepository.getContributorData(userName, repoName)
@@ -51,14 +56,10 @@ class ContributorViewModelTest{
         runBlocking {
             viewModel.getContributorFromApi(userName, repoName)
         }
-    }
 
-    @Test
-    fun checkContributorListUpdated() {
         val contributorList = viewModel.contributorList.value
 
-            assertEquals(contributorResp.body(), contributorList)
-
+        assertEquals(contributorResp.body(), contributorList)
     }
 
 }

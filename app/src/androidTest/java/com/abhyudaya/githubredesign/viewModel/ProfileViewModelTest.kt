@@ -23,6 +23,7 @@ class ProfileViewModelTest {
 
     private lateinit var user: String
     private lateinit var viewModel: ProfileViewModel
+    private var mockRepository = mockk<Repository>()
 
     @Test
     fun getLogin() {
@@ -60,7 +61,7 @@ class ProfileViewModelTest {
         )
 
         val repoResponse: Response<List<ReposData>> = Response.success(
-            listOf<ReposData>(
+            listOf(
                 ReposData(
                     name = "Repo 1",
                     url = "/",
@@ -83,8 +84,6 @@ class ProfileViewModelTest {
                 ))
         )
 
-        val mockRepository = mockk<Repository>()
-
         coEvery {
             mockRepository.getProfileData(user)
         } returns profileResp
@@ -95,10 +94,7 @@ class ProfileViewModelTest {
 
         viewModel = ProfileViewModel(mockRepository)
         runBlocking {
-            val job = CoroutineScope(Dispatchers.IO).async {
-                viewModel.getDataFromApi(user)
-            }
-            job.await()
+            viewModel.getDataFromApi(user)
         }
     }
 }

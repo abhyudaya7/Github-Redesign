@@ -1,13 +1,27 @@
 package com.abhyudaya.githubredesign.utils
 
-import okhttp3.internal.Util
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.util.*
 
 @RunWith(JUnit4::class)
 class UtilsTest{
+
+    private fun getPastTime(minutesToMinus: Long): String {
+        val sampleDate =
+            LocalDateTime.now().atOffset(ZoneOffset.UTC).toInstant().minus(minutesToMinus, ChronoUnit.MINUTES)
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withLocale(
+            Locale.getDefault()
+        ).withZone(ZoneId.from(ZoneOffset.UTC))
+        return formatter.format(sampleDate)
+    }
 
     @Test
     fun formattedDataTest() {
@@ -20,10 +34,10 @@ class UtilsTest{
 
     @Test
     fun getDateTest() {
-        assertEquals("Updated 2 years ago", Utils().getLastUpdatedAt("2020-06-14T18:42:39Z"))
-        assertEquals("Updated 1 month ago", Utils().getLastUpdatedAt("2022-01-14T18:42:39Z"))
-        assertEquals("Updated 3 days ago", Utils().getLastUpdatedAt("2022-02-14T18:42:39Z"))
-        assertEquals("Updated few minutes ago", Utils().getLastUpdatedAt("2022-02-17T23:42:39Z"))
+        assertEquals("Updated few minutes ago", Utils().getLastUpdatedAt(getPastTime(10)))
+        assertEquals("Updated 1 month ago", Utils().getLastUpdatedAt(getPastTime(43800)))
+        assertEquals("Updated 3 days ago", Utils().getLastUpdatedAt(getPastTime(4320)))
+        assertEquals("Updated 1 year ago", Utils().getLastUpdatedAt(getPastTime(525960)))
     }
 
     @Test

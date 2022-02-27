@@ -5,14 +5,11 @@ import java.util.*
 class Utils {
 
     fun getFormattedData(num: Int): String {
-        if (num < 1000)
-            return num.toString()
-
-        else if (num in 1000..999999)
-            return "${num/1000}k"
-
-        else
-            return "${num/1000000}m"
+        return when {
+            num < 1000 -> num.toString()
+            num in 1000..999999 -> "${num/1000}k"
+            else -> "${num/1000000}m"
+        }
     }
 
     fun getLastUpdatedAt(date: String): String {
